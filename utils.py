@@ -7,7 +7,8 @@ s3 = boto3.resource("s3")
 
 
 def resized_image_url(resized_key, bucket, region):
-    return f"https://s3-{region}.amazonaws.com/{bucket}/{resized_key}"
+    # return f"https://s3-{region}.amazonaws.com/{bucket}/{resized_key}"
+    return f"https://{bucket}.s3.amazonaws.com/{resized_key}"
 
 
 def get_file_from_s3(bucket_name, key):
@@ -37,6 +38,7 @@ def upload_file_to_s3(buffer, bucket_name, key):
     try:
         obj = s3.Object(bucket_name=bucket_name, key=key)
         obj.put(Body=buffer, ContentType="image/jpeg")
+        print("uploaded compressed file to s3")
     except Exception as e:
         print(e)
         raise (e)

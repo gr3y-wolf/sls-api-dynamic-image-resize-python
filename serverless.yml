@@ -13,13 +13,20 @@ provider:
 package:
   excludeDevDependencies: true
   exclude:
-    - "node_modules"
-    - "*.json"    
+    - "node_modules/"
+    - "*.json"
+    - "requirements.txt"
+    - "*.md"
+    - "setup.cfg"
 
 functions:
   resize:
     handler: handler.call
+    name: xana-image-resizing-python-resize
+    description: A pillow based lambda for resizing images dynamically
     runtime: python3.8
+    timeout: 10
+    memorySize: 1836
     environment:
       BUCKET: api-test-xana
       REGION: us-east-1
@@ -29,7 +36,6 @@ functions:
       - http:
           path: /{size}/{image}
           method: get
-
 # plugins:
 #   - serverless-s3-local
 #   - serverless-offline
