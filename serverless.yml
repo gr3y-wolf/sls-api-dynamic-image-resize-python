@@ -1,0 +1,37 @@
+service: xana-image-resizing-python
+
+provider:
+  name: aws
+  stackName: dev-xana-dynamic-image-resize
+  region: us-east-1
+  iam:
+    role: arn:aws:iam::845847047647:role/mohneesh-transcoder-role-for-lambda
+  environment:
+    ACCESS_KEY_ID: AKIA4J4DJVXPY3ZJFXNS
+    ACCESS_SECRET: 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
+
+package:
+  excludeDevDependencies: true
+  exclude:
+    - "node_modules"
+    - "*.json"    
+
+functions:
+  resize:
+    handler: handler.call
+    runtime: python3.8
+    environment:
+      BUCKET: api-test-xana
+      REGION: us-east-1
+    layers:
+      - arn:aws:lambda:us-east-1:845847047647:layer:pillow:1
+    events:
+      - http:
+          path: /{size}/{image}
+          method: get
+
+# plugins:
+#   - serverless-s3-local
+#   - serverless-offline
+#   - serverless-python-requirements
+
