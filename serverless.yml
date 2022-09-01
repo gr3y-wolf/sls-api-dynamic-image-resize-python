@@ -36,6 +36,24 @@ functions:
       - http:
           path: /{size}/{image}
           method: get
+
+  resize-v2:
+    handler: handler_v2.main
+    name: xana-image-resizing-python-resize-v2
+    description: v2 of A pillow based lambda for resizing images dynamically
+    runtime: python3.8
+    timeout: 10
+    memorySize: 1836
+    environment:
+      BUCKET: api-test-xana
+      REGION: us-east-1
+    layers:
+      - arn:aws:lambda:us-east-1:845847047647:layer:libvips:1
+    events:
+      - http:
+          # path: /{size}/{image}
+          path: /compress/{image}
+          method: get
 # plugins:
 #   - serverless-s3-local
 #   - serverless-offline
